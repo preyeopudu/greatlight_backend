@@ -1,0 +1,16 @@
+<%- include ('./partials/header');%>
+
+<div class="container">
+    <p class="lead" style="text-align: center;font-size: 1.6rem;">RECEIPTS</p>
+    <%receipts.forEach(function(receipt){%>
+        <div class="card text-light bg-dark mb-3">
+            <div class="card-header">
+                <h4 class="lead" style="font-weight: 600;font-size: 1.2rem;float: left;"><%=receipt.text%></h4>
+                <h5 class="lead" style="font-weight: 600;font-size: 1.2rem;float: right;"><%=new Date(receipt.date).toDateString()%></h5>
+            </div>
+        </div>
+    <%})%>
+    
+</div>
+
+<%- include ('./partials/footer');%>
