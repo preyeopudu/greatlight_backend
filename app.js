@@ -8,7 +8,13 @@ const passportLocalMongoose=require('passport-local-mongoose')
 const app=express()
 
 const mongoose=require('mongoose')
-const uri= 'mongodb://localhost:27017/greatlight'
+
+const uri='mongodb+srv://opudupreye:programmer8@cluster0.lzrhg.mongodb.net/<greatlight>?retryWrites=true&w=majority'
+
+
+
+
+// const uri= 'mongodb://localhost:27017/greatlight'
 
 mongoose.connect(uri, {useNewUrlParser: true,useUnifiedTopology: true})
 .then(() => {
