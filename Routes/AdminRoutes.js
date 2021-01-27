@@ -16,6 +16,10 @@ function isAdmin(req,res,next){
      res.redirect('/admin/login');
 }
 
+router.get('/', (req, res) => {
+     res.redirect('/admin/login');
+});
+
 router.get('/admin/login', (req, res) => {
         res.render('login');
 });

@@ -64,10 +64,7 @@ app.use(planRoutes)
 
 
 
-app.get('/',(req,res)=>{
-     res.json({'msg':"hello world"});
-     console.log(1)
-})
+
 
 
 
