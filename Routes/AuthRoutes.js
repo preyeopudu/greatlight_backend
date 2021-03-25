@@ -6,13 +6,16 @@ const User =require('../model/User')
 const Plan=require('../model/Plan')
 
 
+
+
 router.post('/signup',(req,res)=>{
     const newUser={username:req.body.username,name:req.body.name,referee:req.body.referee}
     const userPassword=req.body.password
     console.log(1)
 
     User.register(new User(newUser),req.body.password,(err,user)=>{
-         if(err){ res.json({error:true});}
+         if(err){ 
+             res.json({error:true});}
                 console.log(err)
          passport.authenticate("local")(req,res,()=>{
               res.json({auth:true,user:req.user});

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const passportLocalMongoose=require('passport-local-mongoose')
 const Plan =require('./Plan')
-
+const Receipt=require('../model/Receipt')
 
 const userSchema=new mongoose.Schema({
     username:String,
@@ -15,8 +15,10 @@ const userSchema=new mongoose.Schema({
     Amount:{type:Number,default:0},
     deposit:{type:Number,default:0},
     nextday:Date,
+    notice:{type:Boolean,default:true},
     active:{type:Boolean,default:false},
-    claimed:{type:Boolean,default:false}
+    claimed:{type:Boolean,default:false},
+    receipt:[Receipt.schema]
     ///for admin
 })
 

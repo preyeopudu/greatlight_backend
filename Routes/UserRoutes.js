@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 const User =require('../model/User')
 const Plan=require('../model/Plan')
 const Withdraw=require('../model/Withdraw')
-
+const Receipt=require('../model/Receipt')
+const Notification=require('../model/Notification')
 
 router.get('/user/:user', (req, res) => {
     User.findOne({username:req.params.user},(err,user)=>{
@@ -71,6 +72,7 @@ router.post('/:user/claim', (req, res) => {
                          console.log(matureDate)
                          console.log(new Date())
                          user.plan.pop()
+                         user.active=false
                          user.nextday=null
                          user.save(()=>{
                               res.json({user:user});
@@ -134,6 +136,83 @@ router.post('/:user/withdraw', (req, res) => {
     })
 });
 
+router.post('/:user/transfer',(req,res)=>{
+    const amount=req.body.amount
+    User.findOne({username:req.params.user},(err,user)=>{
+        if(err || user==null){ res.json({err:"user does not exist"});}
+        else{
+            User.findOne({username:req.body.user},(err,recipient)=>{
+                if(err||recipient==null||req.params.user==req.body.user){res.json({userFalse:true})}
+                else{
+                    if(user.deposit>=amount || user.Amount>=amount ){
+                        Receipt.create({text:`${user.name} transferred ${amount} BTX to you.`},(err,recipientReceipt)=>{
+                            if(user.deposit>=amount){
+                                Receipt.create({text:`you transferred ${amount} BTX to ${recipient.name}.`},(err,userReceipt)=>{
+                                    user.deposit=Number(user.deposit)-Number(amount)
+                                    user.receipt.push(userReceipt)
+                                    user.ip=req.headers['x-forwarded-for']
+                                    user.save((err)=>{
+                                        if(err){
+                                            res.json({success:false})
+                                        }else{
+                                        res.json({success:true,user})
+                                        recipient.deposit=Number(recipient.deposit)+Number(amount)
+                                        recipient.receipt.push(recipientReceipt)
+                                        recipient.save()}
+                                    })
+                                })
+                                
+                                
+                            }else if(user.Amount>=amount){
+                                Receipt.create({text:`you transferred ${amount} BTX to ${recipient.name}.`},(err,userReceipt)=>{
+                                    user.receipt.push(userReceipt)
+                                    user.Amount=Number(user.Amount)-Number(amount)
+                                    user.ip=req.headers['x-forwarded-for']
+                                    user.save(()=>{
+                                        res.json({success:true,user})
+                                        recipient.receipt.push(recipientReceipt)
+                                        recipient.deposit=Number(recipient.deposit)+Number(amount)
+                                        recipient.save()
+                                    })
+                                })
+                            }
+                        })
+                        
+                    }else{ res.json({success:false});}
+                }
+            })
+        }
+    }) 
+})
 
+router.get('/notifications', (req, res) => {
+    Notification.find({},(err,allNotifications)=>{
+        if(err){ console.log(err)}
+        else{
+            res.json({notifications:allNotifications});
+        }
+         
+    })
+});
+
+
+router.post('/:user/notify', (req, res) => {
+    User.findOne({username:req.params.user},(err,user)=>{
+        user.notice=false
+        user.save(()=>{
+            if(err){
+                console.log(err);
+            }else{
+                res.json(user);
+            }
+             
+        })
+    })
+});
+
+
+// Notification.remove({},()=>{
+//     console.log('removed')
+// })
 
 module.exports = router  

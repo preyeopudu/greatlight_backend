@@ -9,31 +9,31 @@ router.post('/:user/plan/:plan', (req, res) => {
     let bonus
     let plan
     if(planName=="emerald"){
-        plan={name:"EMERALD",cost:15000,daily:750,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"EMERALD",cost:15000,daily:1500,matureDate:Date.now()+14*24*60*60*1000}
         bonus=750
     }
     else if(planName=='ruby'){
-        plan={name:"RUBY",cost:30000,daily:1500,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"RUBY",cost:30000,daily:3000,matureDate:Date.now()+14*24*60*60*1000}
         bonus=1500
     }
     else if(planName=="sapphire"){
-        plan={name:"SAPPHIRE",cost:60000,daily:3000,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"SAPPHIRE",cost:60000,daily:6000,matureDate:Date.now()+14*24*60*60*1000}
         bonus=3000
     }
     else if(planName=="onyx"){
-        plan={name:"ONYX",cost:120000,daily:6000,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"ONYX",cost:120000,daily:12000,matureDate:Date.now()+14*24*60*60*1000}
         bonus=6000
     }
     else if(planName=="chrysolite"){
-        plan={name:"CHRYSOLITE",cost:240000,daily:12000,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"CHRYSOLITE",cost:240000,daily:24000,matureDate:Date.now()+14*24*60*60*1000}
         bonus=12000
     }
     else if(planName=="agate"){
-        plan={name:"AGATE",cost:480000,daily:24000,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"AGATE",cost:480000,daily:48000,matureDate:Date.now()+14*24*60*60*1000}
         bonus=24000
     }
     else if(planName=="amethyst"){
-        plan={name:"AMETHYST",cost:960000,daily:48000,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"AMETHYST",cost:960000,daily:96000,matureDate:Date.now()+14*24*60*60*1000}
         bonus=48000
     }
     

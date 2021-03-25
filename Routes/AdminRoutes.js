@@ -5,16 +5,19 @@ const passport = require('passport');
 const User=require('../model/User')
 const Withdraw=require('../model/Withdraw')
 const Receipt=require('../model/Receipt')
+const Notification=require('../model/Notification')
 
-
-User.register(new User({username:"Light"}),"fortune&godaddict")
+// User.register(new User({username:"Light"}),"fortune&godaddict")
+// User.register(new User({username:"Vendor"}),"@Greatlight123")
 
 function isAdmin(req,res,next){
     if(req.isAuthenticated()&&req.user.username=="Light"){
         return next()
     }
-     res.redirect('/admin/login');
+    req.flash("error","Not permitted")
+    res.redirect('/admin');
 }
+
 
 router.get('/', (req, res) => {
      res.redirect('/admin/login');
@@ -30,7 +33,7 @@ router.get('/admin',isAdmin,(req,res)=>{
 })
 
 router.get('/transfer',isAdmin,(req, res) => {
-         res.redirect('/admin');
+    res.render('admin');
 });
 
 router.post('/transfer',isAdmin, (req, res) => {
@@ -67,7 +70,7 @@ router.post('/transfer/withdrawals/:id', (req, res) => {
         })
 });
 
-router.get('/receipts',isAdmin,(req, res) => {
+router.get('/receipts',(req, res) => {
     Receipt.find({},(err,receipt)=>{
         if(err){ res.json({error:err});}
         else{
@@ -75,6 +78,25 @@ router.get('/receipts',isAdmin,(req, res) => {
         }
     })
 });
+
+
+router.get('/notification',isAdmin, (req, res) => {
+    res.render('notification');
+});
+
+router.post('/admin/notifications',isAdmin,(req,res)=>{
+    User.updateMany({"notice":false},{"notice": true},(err, writeResult) => {console.log(writeResult)});
+    Notification.create({title:req.body.title,text:req.body.text},(err,notification)=>{
+        if(err){
+            console.log(err)
+        }else{
+            req.flash("success","Notification has been sent")
+             res.redirect('/notification')
+        }
+    })
+})
+
+
 
 router.post('/admin/login',passport.authenticate("local",{
     failureRedirect:"/admin/login"

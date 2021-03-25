@@ -60,12 +60,6 @@ app.use(planRoutes)
 
 
 
-// User.remove({},(err)=>{
-//   if(err){console.log(err)}
-//   else{
-//     console.log("All users deleted")
-//   }
-// })
 
 
 
