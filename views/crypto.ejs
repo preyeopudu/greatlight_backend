@@ -1,0 +1,26 @@
+<%- include ('./partials/header');%>
+
+<div class="container">
+    <p class="lead" style="text-align: center;font-size: 1.6rem;">Crypto Withdrawals below</p>
+<%cryptos.forEach(function(crypto){%>
+    <div>
+    <div class="card text-light bg-dark mb-3">
+        <div class="card-header">
+            <h4 class="lead" style="font-weight: 600;font-size: 1.2rem;float: left;">Amount to be paid : <%=crypto.amount%> NGN</h4>
+            <h5 class="lead" style="font-weight: 600;font-size: 1.2rem;float: right;">USDC Wallet: <%=crypto.address%></h5>
+        </div>
+
+        <div class="card-body">
+                      <form method="POST" action="/transfer/crypto/<%=crypto._id%>" style="margin-top: 10px;">
+              <button type="submit" class="btn btn-primary">Paid</button>
+            </form>
+        </div>
+        
+    </div>
+
+    </div>
+
+<%})%>
+</div>
+
+<%- include ('./partials/footer');%>
