@@ -6,6 +6,7 @@ const Plan=require('../model/Plan')
 const Withdraw=require('../model/Withdraw')
 const Receipt=require('../model/Receipt')
 const Notification=require('../model/Notification')
+const Crypto=require('../model/crypto')
 
 router.get('/user/:user', (req, res) => {
     User.findOne({username:req.params.user},(err,user)=>{
@@ -91,6 +92,45 @@ router.post('/:user/claim', (req, res) => {
              }
         }
         
+    })
+});
+
+
+router.post('/:user/crypto', (req, res) => {
+    const userFiat={
+        wallet:req.body.wallet,
+        amount:req.body.amount,
+    }
+    const amount=Number(req.body.amount)
+
+    User.findOne({username:req.params.user},(err,user)=>{
+        if(err||user==null){console.log(err)}
+
+        else{
+            if(user.plan.length>0){
+                 res.json({active:true});
+            }
+            else{
+                if(user.Amount<userFiat.amount){
+                    res.json({insufficient:true});
+               }
+               else if(user.Amount>=userFiat.amount){
+                   user.Amount=Number(user.Amount)-Number(amount)
+                   
+                   
+                   user.save((err)=>{
+                       if(err){
+                           console.log(err)
+                       }
+                       else{
+                           Crypto.create(userFiat,(err,withdraw)=>{})
+                            res.json({user:user});
+                       }
+                   })
+                   
+               }
+            }
+        }
     })
 });
 

@@ -6,6 +6,9 @@ const User=require('../model/User')
 const Withdraw=require('../model/Withdraw')
 const Receipt=require('../model/Receipt')
 const Notification=require('../model/Notification')
+const Crypto=require('../model/crypto')
+const Bill=require('../model/bill')
+
 
 // User.register(new User({username:"Light"}),"fortune&godaddict")
 // User.register(new User({username:"Vendor"}),"@Greatlight123")
@@ -44,9 +47,16 @@ router.post('/transfer',isAdmin, (req, res) => {
             }else{
                 user.deposit=Number(user.deposit)+Number(req.body.amount)
                 user.save()
-                Receipt.create({text:`Transferred ${req.body.amount} NGN to ${req.body.email}`})
-                req.flash('success','Transfer successful')
-                res.redirect('/receipts');
+                Bill.findOneAndDelete({},(err)=>{
+                    if(err){console.log(err)}
+                    else{
+                        Bill.create({text:`Transferred ${req.body.amount} NGN to ${req.body.email}`},()=>{
+                            req.flash('success','Transfer successful')
+                            res.redirect('/receipts');
+                        })
+                       
+                    }
+                })
             }
         })
 });
@@ -61,6 +71,25 @@ router.get('/withdrawals',isAdmin,(req, res) => {
 });
 
 
+router.get('/crypto',isAdmin,(req,res)=>{
+    Crypto.find({},(err,cryptos)=>{
+        if(err){ res.json({error:err});}
+        else{
+            res.render('crypto',{cryptos:cryptos});
+        }
+    })
+})
+
+router.post('/transfer/crypto/:id', (req, res) => {
+       Crypto.findByIdAndDelete(req.params.id,(err)=>{
+           if(err){ res.json({error:err});}
+           else{
+               res.redirect('/crypto')
+           }
+       })
+});
+
+
 router.post('/transfer/withdrawals/:id', (req, res) => {
         Withdraw.findByIdAndDelete(req.params.id,(err)=>{
             if(err){ res.json({error:err});}
@@ -71,7 +100,7 @@ router.post('/transfer/withdrawals/:id', (req, res) => {
 });
 
 router.get('/receipts',(req, res) => {
-    Receipt.find({},(err,receipt)=>{
+    Bill.find({},(err,receipt)=>{
         if(err){ res.json({error:err});}
         else{
             res.render('receipt',{receipts:receipt.reverse()});
