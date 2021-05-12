@@ -184,12 +184,12 @@ router.post('/:user/transfer',(req,res)=>{
             User.findOne({username:req.body.user},(err,recipient)=>{
                 if(err||recipient==null||req.params.user==req.body.user){res.json({userFalse:true})}
                 else{
-                    if(user.Amount>=amount ){
+                    if(user.deposit>=amount ){
                         Receipt.create({text:`${user.name} transferred ${amount} NGN to you.`},(err,recipientReceipt)=>{
-                             if(user.Amount>=amount){
+                             if(user.deposit>=amount){
                                 Receipt.create({text:`you transferred ${amount} BTX to ${recipient.name}.`},(err,userReceipt)=>{
                                     user.receipt.push(userReceipt)
-                                    user.Amount=Number(user.Amount)-Number(amount)
+                                    user.deposit=Number(user.deposit)-Number(amount)
                                     user.ip=req.headers['x-forwarded-for']
                                     user.save(()=>{
                                         res.json({success:true,user})
