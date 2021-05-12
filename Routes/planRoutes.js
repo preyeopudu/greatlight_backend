@@ -21,7 +21,7 @@ router.post('/:user/plan/:plan', (req, res) => {
         bonus=3000
     }
     else if(planName=="onyx"){
-        plan={name:"ONYX",cost:120000,daily:64000,matureDate:Date.now()+29*24*60*60*1000}
+        plan={name:"ONYX",cost:120000,daily:6400,matureDate:Date.now()+29*24*60*60*1000}
         bonus=6000
     }
     else if(planName=="chrysolite"){
