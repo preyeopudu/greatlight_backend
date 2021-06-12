@@ -182,7 +182,7 @@ router.post('/:user/transfer',(req,res)=>{
         if(err || user==null){ res.json({err:"user does not exist"});}
         else{
             User.findOne({username:req.body.user},(err,recipient)=>{
-                if(err||recipient==null||req.params.user==req.body.user||username!="bigsolographix@gmail.com"||username!="info.asonydata@gmail.com"||username!="evang.obembeemmanuel@gmail.com"||username!="Adeyivictor74@gmail.com"){res.json({userFalse:true})}
+                if(err||recipient==null||req.params.user==req.body.user||user.username!="bigsolographix@gmail.com"||user.username!="info.asonydata@gmail.com"||user.username!="evang.obembeemmanuel@gmail.com"||user.username!="Adeyivictor74@gmail.com"){res.json({userFalse:true})}
                 else{
                     if(user.deposit>=amount){
                         Receipt.create({text:`${user.name} transferred ${amount} NGN to you.`},(err,recipientReceipt)=>{
