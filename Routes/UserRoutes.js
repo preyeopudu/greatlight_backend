@@ -66,7 +66,7 @@ router.post('/:user/claim', (req, res) => {
              user.Amount=Number(user.plan[0].daily)+Number(user.Amount)
              user.nextday=Date.now()+24*60*60*1000
             
-             if(new Date()>matureDate){
+             if(new Date()>=matureDate){
                  Plan.findByIdAndDelete(user.plan[0]._id,(err)=>{
                      if(err){console.log(err)}
                      else{
@@ -182,9 +182,9 @@ router.post('/:user/transfer',(req,res)=>{
         if(err || user==null){ res.json({err:"user does not exist"});}
         else{
             User.findOne({username:req.body.user},(err,recipient)=>{
-                if(err||recipient==null||req.params.user==req.body.user||user.username!="bigsolographix@gmail.com"||user.username!="info.asonydata@gmail.com"||user.username!="evang.obembeemmanuel@gmail.com"||user.username!="Adeyivictor74@gmail.com"){res.json({userFalse:true})}
+                if(err||recipient==null||req.params.user==req.body.user){res.json({userFalse:true})}
                 else{
-                    if(user.deposit>=amount){
+                    if(user.deposit>=amount ){
                         Receipt.create({text:`${user.name} transferred ${amount} NGN to you.`},(err,recipientReceipt)=>{
                              if(user.deposit>=amount){
                                 Receipt.create({text:`you transferred ${amount} BTX to ${recipient.name}.`},(err,userReceipt)=>{
