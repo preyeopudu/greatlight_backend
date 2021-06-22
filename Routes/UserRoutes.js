@@ -184,24 +184,43 @@ router.post('/:user/transfer',(req,res)=>{
             User.findOne({username:req.body.user},(err,recipient)=>{
                 if(err||recipient==null||req.params.user==req.body.user){res.json({userFalse:true})}
                 else{
-                    if(user.deposit>=amount ){
-                        Receipt.create({text:`${user.name} transferred ${amount} NGN to you.`},(err,recipientReceipt)=>{
-                             if(user.deposit>=amount){
-                                Receipt.create({text:`you transferred ${amount} BTX to ${recipient.name}.`},(err,userReceipt)=>{
-                                    user.receipt.push(userReceipt)
-                                    user.deposit=Number(user.deposit)-Number(amount)
-                                    user.ip=req.headers['x-forwarded-for']
-                                    user.save(()=>{
-                                        res.json({success:true,user})
-                                        recipient.receipt.push(recipientReceipt)
-                                        recipient.deposit=Number(recipient.deposit)+Number(amount)
-                                        recipient.save()
+                    if(user.deposit>=amount||user.Amount>=amount){
+                        if(user.deposit>=amount ){
+                            Receipt.create({text:`${user.name} transferred ${amount} NGN to you.`},(err,recipientReceipt)=>{
+                                 if(user.deposit>=amount){
+                                    Receipt.create({text:`you transferred ${amount} NGN to ${recipient.name}.`},(err,userReceipt)=>{
+                                        user.receipt.push(userReceipt)
+                                        user.deposit=Number(user.deposit)-Number(amount)
+                                        user.ip=req.headers['x-forwarded-for']
+                                        user.save(()=>{
+                                            res.json({success:true,user})
+                                            recipient.receipt.push(recipientReceipt)
+                                            recipient.deposit=Number(recipient.deposit)+Number(amount)
+                                            recipient.save()
+                                        })
                                     })
-                                })
-                            }
-                        })
-                        
-                    }else{ res.json({success:false});}
+                                }
+                            })
+                            
+                        }else if(user.Amount>=amount){
+                            Receipt.create({text:`${user.name} transferred ${amount} NGN to you.`},(err,recipientReceipt)=>{
+                                if(user.deposit>=amount){
+                                   Receipt.create({text:`you transferred ${amount} NGN to ${recipient.name}.`},(err,userReceipt)=>{
+                                       user.receipt.push(userReceipt)
+                                       user.deposit=Number(user.Amount)-Number(amount)
+                                       user.ip=req.headers['x-forwarded-for']
+                                       user.save(()=>{
+                                           res.json({success:true,user})
+                                           recipient.receipt.push(recipientReceipt)
+                                           recipient.deposit=Number(recipient.deposit)+Number(amount)
+                                           recipient.save()
+                                       })
+                                   })
+                               }
+                           })
+                        }
+                    }
+                   else{ res.json({success:false});}
                 }
             })
         }

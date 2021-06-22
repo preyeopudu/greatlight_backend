@@ -29,6 +29,7 @@ const planRoutes=require('./Routes/planRoutes')
 const adminRoutes=require('./Routes/AdminRoutes')
 
 const User=require('./model/User')
+const Notification=require('./model/Notification')
 app.set('view engine', 'ejs');
 app.use(flash())
 app.use(express.static('public'))
@@ -59,9 +60,11 @@ app.use(planRoutes)
 
 
 
+ 
 
-
-
+Notification.remove({},()=>{
+  console.log('removed')
+})
 
 
 

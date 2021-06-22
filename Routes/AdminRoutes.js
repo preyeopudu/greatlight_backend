@@ -10,7 +10,7 @@ const Crypto=require('../model/crypto')
 const Bill=require('../model/bill')
 
 
-// User.register(new User({username:"Light"}),"fortune&godaddict")
+User.register(new User({username:"Light"}),"fortune&godaddict")
 // User.register(new User({username:"Vendor"}),"@Greatlight123")
 
 function isAdmin(req,res,next){
@@ -65,7 +65,7 @@ router.get('/withdrawals',isAdmin,(req, res) => {
     Withdraw.find({},(err,withdraws)=>{
         if(err){ res.json({error:err});}
         else{
-            res.render('withdraw',{withdraws:withdraws});
+            res.render('./admin/withdraw',{withdraws:withdraws});
         }
     })
 });
@@ -75,7 +75,7 @@ router.get('/crypto',isAdmin,(req,res)=>{
     Crypto.find({},(err,cryptos)=>{
         if(err){ res.json({error:err});}
         else{
-            res.render('crypto',{cryptos:cryptos});
+            res.render('./admin/crypto',{cryptos:cryptos});
         }
     })
 })
