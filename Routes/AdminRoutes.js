@@ -65,7 +65,7 @@ router.get('/withdrawals',isAdmin,(req, res) => {
     Withdraw.find({},(err,withdraws)=>{
         if(err){ res.json({error:err});}
         else{
-            res.render('./admin/withdraw',{withdraws:withdraws});
+            res.render('withdraw',{withdraws:withdraws});
         }
     })
 });
@@ -75,7 +75,7 @@ router.get('/crypto',isAdmin,(req,res)=>{
     Crypto.find({},(err,cryptos)=>{
         if(err){ res.json({error:err});}
         else{
-            res.render('./admin/crypto',{cryptos:cryptos});
+            res.render('crypto',{cryptos:cryptos});
         }
     })
 })
