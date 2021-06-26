@@ -62,9 +62,6 @@ app.use(planRoutes)
 
  
 
-Notification.remove({},()=>{
-  console.log('removed')
-})
 
 
 
