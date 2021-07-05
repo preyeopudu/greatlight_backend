@@ -7,6 +7,7 @@ const Withdraw = require("../model/Withdraw");
 const Receipt = require("../model/Receipt");
 const Notification = require("../model/Notification");
 const Crypto = require("../model/crypto");
+const Ad = require("../model/Ad");
 const { route } = require("./planRoutes");
 
 router.get("/user/:user", (req, res) => {
